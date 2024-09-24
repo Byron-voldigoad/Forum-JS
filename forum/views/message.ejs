@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Utilisateurs</title>
+    <link rel="stylesheet" href="/css/style-login.css"> <!-- Lien vers votre CSS -->
+</head>
+<body>
+    <h1>Liste des Utilisateurs</h1>
+    <ul>
+        <% messages.forEach(message => { %>
+            <li><%= message.msg %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>

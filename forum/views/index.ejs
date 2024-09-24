@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    
+    <title>Forum de discution</title>
+  </head>
+  <body>
+    <div class="liste-chat">
+      <div class="recherche">
+        <button onclick="openMenu()" class="header-menu-btn" id="menu">
+          <span class="material-icons icons">menu</span>
+        </button>
+        <input type="text" class="search-user"/>
+      </div>
+      <div class="users-list">
+        <% utilisateurs.forEach(utilisateur => { %>
+          
+        <div class="user-infos">
+          <div class="first">
+            <div class="photos">
+              <img src="/img/<%=utilisateur.pp%>" alt="" />
+            </div>
+            <div class="nom-prenom">
+              <h4><%= utilisateur.nom_utilisateur %> <%= utilisateur.prenom_utilisateur %></h4>
+              <p>dernier message</p>
+            </div>
+          </div>
+          <div class="second">
+            <div class="date-nbrMsg">
+              <p>heure</p>
+              <p>12</p>
+            </div>
+            
+          </div>
+        </div>
+        <% }) %>
+        
+      </div>
+    </div>
+    <div class="discucions">
+      <div class="entete" id="entete">
+        <div class="first">
+          <button onclick="openMenu()" id="retour">
+            <span class="material-icons icons">arrow_back</span>
+          </button>
+        </div>
+        <div class="second">
+          <button onclick="openMenu()" id="recherche">
+            <span class="material-icons icons">search</span>
+          </button>
+          <button onclick="openMenu()" id="menu">
+            <span class="material-icons icons">list</span>
+          </button>
+        </div>
+      </div>
+      <div class="msg-discu" id="msg-discu">
+
+        
+        <div class="evoyer">
+          <p class="">hhjqdjfqdjqddq</p>
+        </div>
+
+        <div class="recu">
+          <div class="photos-pp">
+            <img src="#" alt="" />
+          </div>
+          <p class="">hhjqdj
+            qfq
+            qsfq
+            
+            
+            
+            sqfqsfsqqsfqdjqddq</p>
+        </div>
+        
+          <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
+            <% messages.forEach(message => { %>
+              <% if ( message.msg !== "" ) { %>
+                <% if ( message.id_emeteur !== user.id ) { %>
+              <div class="recu">
+                <div class="photos-pp">
+                  <img src="#" alt="" />
+                </div>
+                <p><%= message.msg %></p>
+              </div>
+            
+            <% }else{ %>
+              <div class="evoyer">
+                <p><%= message.msg %></p>
+              </div>
+            <% } %>
+            <% } %>
+            <% }) %>
+        <% } else { %>
+            <p>Aucun message à afficher.</p>
+        <% } %>
+        
+       
+       
+
+        
+
+      </div>
+      
+
+      <div class="envoie-message" id="text-zone-div">
+       
+        <form action="/utilisateur" method="post" class="form-msg">
+          <textarea
+          id="text-zone"
+          placeholder="Entrer le message a envoyer"
+          class="input-msg"></textarea>
+          <input type="hidden" id="utilisateur-id" name="id_emeteur" value="<%= user ? user.id : '' %>" />
+          <input type="hidden" name="msg" id="msg222">
+          <button type="submit" onclick="sendMessage()" id="envoie-btn" class="envoie-btn">
+            <span class="material-icons icons">send</span>
+          </button>
+        </form>
+        
+      </div>
+    </div>
+</body>
+  <script src="/js/app.js"></script>
+  <script>
+    console.log("<%= message %>")
+  </script>
+
+</html>

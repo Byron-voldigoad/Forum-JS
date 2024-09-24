@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style-login.css">
+    <title>inscription</title>
+</head>
+<body>
+
+   
+
+<form class="form" action="/submit" method="post" >
+    <p class="title">Formulaire d'incription</p>
+        <% if (typeof message !== 'undefined' && message) { 
+            if(message == 'Utilisateur ajouté avec succès !'){%>
+            <div class="alert-success"><%= message %></div>
+          <% }else{ %>
+            <div class="alert-error"><%= message %></div>
+            <% }} %>
+    <p class="message">Inscrivez-vous maintenant et obtenez un accès complet à notre application.</p>
+        <div class="flex">
+        <label>
+            <input class="input" type="text" id="nom" name="nom" placeholder="" required="">
+            <span>Nom</span>
+        </label>
+
+        <label>
+            <input class="input" type="text" id="prenom" name="prenom"  placeholder="" required="">
+            <span>Prenom</span>
+        </label>
+    </div>  
+            
+    <label>
+        <input class="input" type="email" id="email" name="email"  placeholder="" required="">
+        <span>Email</span>
+    </label> 
+        
+    <label>
+        <input class="input" type="password" id="pwd1" name="pwd1"  placeholder="" required="">
+        <span>Mot de passe</span>
+    </label>
+    <label>
+        <input class="input" type="password" id="pwd2" name="pwd2"  placeholder="">
+        <span>Confirmer le Mot de passe</span>
+    </label>
+    <button class="submit">Enregistrer</button>
+    <p class="signin">Vous avez deja un compte ? <a href="/connexion">Se connecter</a> </p>
+</form>
+    
+
+
+</body>
+<script>
+   " <% if (typeof message !== 'undefined' && message) { %>"
+        var message = "<%= message %>";
+          "<% } %>"
+     
+    // Rediriger après un délai
+    if (message == "Utilisateur ajouté avec succès !") {
+        console.log(message)
+        setTimeout(function() {
+      window.location.href = '/connexion'; // Redirige vers l'URL spécifiée
+    }, 3000); // 3000 ms = 3 secondes
+         }else{
+            setTimeout(function() {
+      window.location.href = '/'; // Redirige vers l'URL spécifiée
+    }, 3000); // 3000 ms = 3 secondes
+         }
+    
+  </script>
+</html>

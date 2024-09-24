@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style-login.css">
+    <title>Connexion</title>
+</head>
+<body>
+
+<form class="form" action="/connexion" method="post">
+    <p class="title">Formulaire de Connection </p>
+    <% if (typeof message !== 'undefined' && message) { %>
+            <div class="alert-error"><%= message %></div>
+            <%}%>
+    <p class="message">Connecter vous a votre compte.</p>
+            
+    <label>
+        <input class="input" type="email" id="email" name="email"  placeholder="">
+        <span>Email</span>
+    </label> 
+        
+    <label>
+        <input class="input" type="password" id="pwd" name="pwd"  placeholder="">
+        <span>Mot de passe</span>
+    </label>
+
+    <button class="connexion">Se connecter</button>
+    <p class="signin">Vous n'avez pas de  compte ? <a href="../">Crée un compte</a> </p>
+</form>
+    
+</body>
+
+</html>
