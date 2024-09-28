@@ -18,7 +18,6 @@ body {
   gap: 5px;
   position: fixed;
   background-color: rgb(8, 12, 28);
-  z-index: 999;
 }
 .search-user {
   width: 250px;
@@ -46,6 +45,11 @@ body {
   height: 100vh;
   background-color: rgb(1, 2, 11);
 }
+.discucions2 {
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(1, 2, 11);
+}
 .users-list {
   margin-top: 15%;
 }
@@ -61,6 +65,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
 .user-infos {
   display: flex;
   margin-left: 5%;
@@ -104,6 +109,18 @@ body {
   position: fixed;
   bottom: 0;
 }
+.envoie-message2 {
+  display: flex;
+  background-color: rgb(8, 12, 28);
+  width: 100%;
+  height: 8%;
+  justify-content: center;
+  /* align-items: center; */
+  position: fixed;
+  bottom: 0;
+  padding-left: 10px;
+}
+
 
 .envoie-btn {
   display: flex;
@@ -172,7 +189,8 @@ button {
 
 #menu,
 #recherche,
-#retour {
+#retour,
+#deco {
   max-height: 20px;
   margin-top: 1.8%;
   color: rgb(141, 141, 143);
@@ -182,20 +200,34 @@ button {
   display: flex;
   background-color: rgb(8, 12, 28);
   width: 100%;
-  height: 8%;
+  height: 10%;
   justify-content: end;
+
   /* align-items: center; */
 }
 
 .first {
-  width: 50%;
-  display: flex;
+  width: 40%;
+}
+.name-user-actif{
+  color: blue;
+  margin-left: 10%;
+}
+.unique{
+  margin-top: 10px;
+  margin-left: 20%;
 }
 
 .second {
-  width: 50%;
+  width: 40%;
   display: flex;
   justify-content: end;
+}
+.tird {
+  width: 20%;
+  display: flex;
+  justify-content: end;
+  padding-right: 5px;
 }
 
 .date-nbrMsg {
@@ -236,4 +268,87 @@ button {
   height: fit-content;
   background-color: rgba(3, 3, 20, 0.791);
   white-space: pre; /* Conserve les retours à la ligne et les espaces */
+}
+
+.info-emmeteur{
+  display: flex;
+}
+.nom-emet{
+  color: rgb(6, 30, 123);
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+@media(max-width:1000px){
+
+  .search-user {
+    width: 72%;
+    height: 4%;
+  }
+  body {
+    display: block;
+  }
+  
+  .discucions {
+    width: 100%;
+  }
+  .envoie-message {
+    width: 100%;
+  }
+
+  .liste-chat {
+    position: absolute;
+    height: 100vh;
+    width: 80%;
+    z-index: 999;
+    display: none;
+  }
+  .active{
+    display: block;
+  }
+
+  .name-user-actif{
+    margin-left: 4%;
+    width: 55%;
+    text-align: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 14px;
+  }
+  .unique{
+    margin-top: 10px;
+    margin-left: 20%;
+  }
+  .photos-pp img {
+    height: 3vh;
+    width: 3vh;
+  }
+  .head{
+    position: fixed;
+    height: 5%;
+    width: 80%;
+    background-color: rgb(8, 12, 28);  
+z-index: 3;
+
+  }
+  .divcloseUserListe{
+    position: fixed;
+    margin-left: 70%;
+    color: aliceblue;
+    z-index: 6;
+    top: 1%;
+  }
+  .divcloseUserListe span{
+    color: aliceblue;
+  }
+  .info-emmeteur {
+    font-size: 11px;
+}
+.second {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
 }

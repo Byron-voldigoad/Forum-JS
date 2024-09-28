@@ -4,29 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!-- <script src="../node_modules/socket.io/client-dist/socket.io.js"></script> -->
     <title>Forum de discution</title>
   </head>
   <body>
-    <div class="liste-chat">
-      <div class="recherche">
-        <button onclick="openMenu()" class="header-menu-btn" id="menu">
-          <span class="material-icons icons">menu</span>
-        </button>
-        <input type="text" class="search-user"/>
+    <%if (user.id == 1){ %>
+    <div class="liste-chat" id="liste-chat">
+      <div class="head">
+        <div class="recherche">
+          <button onclick="openMenu()" class="header-menu-btn" id="menu">
+            <span class="material-icons icons">menu</span>
+          </button>
+          <input type="text" class="search-user" />
+        </div>
+        <div class="divcloseUserListe">
+          <button
+            onclick="closeUserListe()"
+            class="closeUserListe"
+            id="closeUserListe"
+          >
+            <span class="material-icons icons">close</span>
+          </button>
+        </div>
       </div>
+
       <div class="users-list">
         <% utilisateurs.forEach(utilisateur => { %>
-          
+
         <div class="user-infos">
           <div class="first">
             <div class="photos">
               <img src="/img/<%=utilisateur.pp%>" alt="" />
             </div>
             <div class="nom-prenom">
-              <h4><%= utilisateur.nom_utilisateur %> <%= utilisateur.prenom_utilisateur %></h4>
+              <h4>
+                <%= utilisateur.nom_utilisateur %> <%=
+                utilisateur.prenom_utilisateur %>
+              </h4>
               <p>dernier message</p>
             </div>
           </div>
@@ -35,19 +53,30 @@
               <p>heure</p>
               <p>12</p>
             </div>
-            
           </div>
         </div>
         <% }) %>
-        
       </div>
     </div>
-    <div class="discucions">
+    <% } %>
+    <div
+      class="<%if (user.id == 1){ %>discucions<% }else{ %>discucions2 <% } %>"
+    >
       <div class="entete" id="entete">
         <div class="first">
-          <button onclick="openMenu()" id="retour">
-            <span class="material-icons icons">arrow_back</span>
-          </button>
+          <% messages.some(message1 => { %><% if ( message1.id_emeteur ==
+          user.id ) { %>
+          <div class="photos-pp unique">
+            <button onclick="openUserListe()" id="userList">
+              <img src="/img/<%=message1.pp%>" alt="" />
+            </button>
+          </div>
+          <div class="name-user-actif">
+            <p>
+              <%= message1.nom_utilisateur %> <%= message1.prenom_utilisateur %>
+            </p>
+          </div>
+          <% return true; } %><% }) %>
         </div>
         <div class="second">
           <button onclick="openMenu()" id="recherche">
@@ -57,77 +86,103 @@
             <span class="material-icons icons">list</span>
           </button>
         </div>
+        <div class="tird">
+          <button onclick="deconnection()" id="deco">
+            <span class="material-icons icons">deconnection</span>
+          </button>
+        </div>
       </div>
       <div class="msg-discu" id="msg-discu">
-
-        
-        <div class="evoyer">
-          <p class="">hhjqdjfqdjqddq</p>
-        </div>
-
-        <div class="recu">
+        <% if (typeof messages !== 'undefined' && messages.length > 0) { %> <%
+        messages.forEach(message => { %> <% if ( message.msg !== "" ) { %> <% if
+        ( message.id_emeteur !== user.id ) { %>
+        <div class="info-emmeteur">
           <div class="photos-pp">
-            <img src="#" alt="" />
+            <img src="/img/<%=message.pp%>" alt="" />
           </div>
-          <p class="">hhjqdj
-            qfq
-            qsfq
-            
-            
-            
-            sqfqsfsqqsfqdjqddq</p>
+          <div class="recu">
+            <div class="nom-emet">
+              <p>
+                <%= message.nom_utilisateur %> <%= message.prenom_utilisateur %>
+              </p>
+            </div>
+
+            <p><%= message.msg %></p>
+          </div>
+        </div>
+
+        <% }else{ %>
+        <div class="evoyer">
+          <p><%= message.msg %></p>
         </div>
         
-          <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
-            <% messages.forEach(message => { %>
-              <% if ( message.msg !== "" ) { %>
-                <% if ( message.id_emeteur !== user.id ) { %>
-              <div class="recu">
-                <div class="photos-pp">
-                  <img src="#" alt="" />
-                </div>
-                <p><%= message.msg %></p>
-              </div>
-            
-            <% }else{ %>
-              <div class="evoyer">
-                <p><%= message.msg %></p>
-              </div>
-            <% } %>
-            <% } %>
-            <% }) %>
-        <% } else { %>
-            <p>Aucun message à afficher.</p>
+        <% } %> <% } %> <% }) %> <% } else { %>
+        <p>Aucun message à afficher.</p>
         <% } %>
-        
-       
-       
-
-        
-
       </div>
-      
 
-      <div class="envoie-message" id="text-zone-div">
-       
+      <div
+        class="<%if (user.id == 1){ %>envoie-message<% }else{ %>envoie-message2 <% } %>"
+        id="text-zone-div"
+      >
         <form action="/utilisateur" method="post" class="form-msg">
           <textarea
-          id="text-zone"
-          placeholder="Entrer le message a envoyer"
-          class="input-msg"></textarea>
-          <input type="hidden" id="utilisateur-id" name="id_emeteur" value="<%= user ? user.id : '' %>" />
-          <input type="hidden" name="msg" id="msg222">
-          <button type="submit" onclick="sendMessage()" id="envoie-btn" class="envoie-btn">
+            id="text-zone"
+            placeholder="Entrer le message a envoyer"
+            class="input-msg"
+          ></textarea>
+          <input
+            type="hidden"
+            id="utilisateur-id"
+            name="id_emeteur"
+            value="<%= user ? user.id : '' %>"
+          />
+          <input type="hidden" name="msg" id="msg222" />
+          <button
+            type="submit"
+            onsubmit="sendMessage()"
+            id="envoie-btn"
+            class="envoie-btn"
+          >
             <span class="material-icons icons">send</span>
           </button>
         </form>
-        
       </div>
     </div>
-</body>
-  <script src="/js/app.js"></script>
-  <script>
-    console.log("<%= message %>")
-  </script>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  // Initialisation de la connexion Socket.IO
+  const socket = io();
+socket.on('connect', () => {
+  console.log('Connexion à Socket.IO établie');
+});
 
+
+  // Écouter l'événement 'nouveauMessage' envoyé par le serveur
+  socket.on('nouveauMessage', (data) => {
+  const msgDiscu = document.getElementById('msg-discu');
+
+  const messageHtml = `
+    <div class="info-emmeteur">
+      <div class="photos-pp">
+        <img src="/img/pp-defaut.jpg" alt="" />
+      </div>
+      <div class="recu">
+        <div class="nom-emet">
+          <p>${data.nom_utilisateur} ${data.prenom_utilisateur}</p>
+        </div>
+        <p>${data.msg}</p>
+      </div>
+    </div>
+  `;
+
+  msgDiscu.insertAdjacentHTML('beforeend', messageHtml);
+  msgDiscu.scrollTop = msgDiscu.scrollHeight; // Faire défiler jusqu'au bas des messages
+});
+
+</script>
+
+  </body>
+  <script src="/js/app.js"></script>
+ 
 </html>

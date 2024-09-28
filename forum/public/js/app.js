@@ -4,6 +4,12 @@ const btn_send = document.getElementById("envoie-btn");
 const messageContainer = document.getElementById("msg-discu");
 const innnn = document.getElementById("msg222");
 
+const btn_deco = document.getElementById("deco");
+
+const userList = document.getElementById("liste-chat");
+const btn_open_user_liste = document.getElementById("userList");
+const btn_close_user_liste = document.getElementById("closeUserListe");
+
 textarea.addEventListener("input", () => {
   const ligne = textarea.value.split("\n").length;
   if (ligne <= 5) {
@@ -31,11 +37,35 @@ const sendMessage = () => {
   div.style.height = "10%";
   textarea.value = "";
   innnn.value = msgContain;
-  history.go(0)
+};
+
+const openUserListe = () => {
+  userList.classList.add("active");
+};
+
+const closeUserListe = () => {
+  userList.classList.remove("active");
+};
+
+const deconnection = () => {
+  window.location.href = "../connexion";
 };
 
 btn_send.addEventListener("click", sendMessage);
 
+btn_deco.addEventListener("click", deconnection);
+
+if (btn_open_user_liste) {
+btn_open_user_liste.addEventListener("click", openUserListe);
+}
+if (btn_close_user_liste) {
+  btn_close_user_liste.addEventListener("click", closeUserListe);
+}
+
+
+window.addEventListener("load", function (event) {
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+});
 // Optionnel : Permettre l'envoi avec la touche "Entrée" et de
 // Gérer l'événement keydown pour le textarea
 textarea.addEventListener("keydown", (event) => {
@@ -60,7 +90,6 @@ textarea.addEventListener("keydown", (event) => {
       sendMessage();
       if (form) {
         form.submit(); // Soumet le formulaire
-        
       }
       event.preventDefault(); // Empêche le comportement par défaut de la touche Entrée dans les champs de texte
     }

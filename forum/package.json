@@ -28,7 +28,9 @@
     "nodemo": "^1.0.0",
     "passport": "^0.7.0",
     "pg": "^8.12.0",
-    "stream": "^0.0.3"
+    "socket.io": "^4.8.0",
+    "stream": "^0.0.3",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
