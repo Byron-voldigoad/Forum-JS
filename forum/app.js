@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const http = require("http");
-const socketIo = require('socket.io'); // Utilisation de socket.io pour la communication en temps réel
+const socketIo = require("socket.io"); // Utilisation de socket.io pour la communication en temps réel
 require("dotenv").config();
 
 const app = express();
@@ -12,15 +12,34 @@ const server = http.createServer(app);
 const io = socketIo(server); // Initialisation de socket.io pour gérer les connexions en temps réel
 
 // Configuration de la connexion à MySQL
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root", // Remplacer par votre nom d'utilisateur MySQL
+//   password: "", // Remplacer par votre mot de passe MySQL
+//   database: "forum", // Remplacer par le nom de votre base de données
+//   // Si vous utilisez SSL pour une base de données distante, vous pouvez activer cette option :
+//   // ssl: {
+//   //   ca: fs.readFileSync('chemin/vers/votre/ca.pem')
+//   // }
+// });
+
+// Créer une connexion à la base de données MySQL a DBeaver-aiven
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root", // Remplacer par votre nom d'utilisateur MySQL
-  password: "", // Remplacer par votre mot de passe MySQL
-  database: "forum", // Remplacer par le nom de votre base de données
-  // Si vous utilisez SSL pour une base de données distante, vous pouvez activer cette option :
-  // ssl: {
-  //   ca: fs.readFileSync('chemin/vers/votre/ca.pem')
-  // }
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT,
+  ssl: {
+    ca: fs.readFileSync("C:/Users/RAY/Downloads/ca.pem"),
+  },
+});
+// Connexion à la base de données
+db.connect((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log("Connecté à la base de données MySQL");
 });
 
 // Connexion à la base de données
@@ -79,7 +98,9 @@ app.post("/connexion", (req, res) => {
   db.query(query, [email, pwd], (err, results) => {
     if (err) {
       console.log("Erreur lors de la connexion :", err);
-      return res.render("connexion", { message: "Erreur lors de la connexion." });
+      return res.render("connexion", {
+        message: "Erreur lors de la connexion.",
+      });
     }
 
     if (results.length > 0) {
@@ -109,14 +130,18 @@ app.get("/utilisateurs", (req, res) => {
   const query = "SELECT * FROM utilisateurs";
   db.query(query, (err, utilisateurs) => {
     if (err) {
-      return res.status(500).send("Erreur lors de la récupération des utilisateurs.");
+      return res
+        .status(500)
+        .send("Erreur lors de la récupération des utilisateurs.");
     }
 
     // Récupération des messages
     const messageQuery = "SELECT * FROM users_message";
     db.query(messageQuery, (err, messages) => {
       if (err) {
-        return res.status(500).send("Erreur lors de la récupération des messages.");
+        return res
+          .status(500)
+          .send("Erreur lors de la récupération des messages.");
       }
       // Affichage des utilisateurs et des messages
       res.render("index", { utilisateurs, user: req.session.user, messages });
@@ -137,7 +162,9 @@ app.post("/utilisateur", (req, res) => {
   db.query(queryUser, [id_emeteur], (err, results) => {
     if (err || results.length === 0) {
       console.log("Erreur lors de la récupération de l'utilisateur :", err);
-      return res.status(500).json({ error: "Erreur lors de la récupération de l'utilisateur." });
+      return res
+        .status(500)
+        .json({ error: "Erreur lors de la récupération de l'utilisateur." });
     }
 
     const { nom_utilisateur, prenom_utilisateur } = results[0];
@@ -147,11 +174,18 @@ app.post("/utilisateur", (req, res) => {
     db.query(queryMessage, [id_emeteur, msg], (err) => {
       if (err) {
         console.log("Erreur lors de l'insertion du message :", err);
-        return res.status(500).json({ error: "Erreur lors de l'insertion du message." });
+        return res
+          .status(500)
+          .json({ error: "Erreur lors de l'insertion du message." });
       }
 
       // Diffusion du message à tous les utilisateurs connectés
-      io.emit("nouveauMessage", { id_emeteur, nom_utilisateur, prenom_utilisateur, msg });
+      io.emit("nouveauMessage", {
+        id_emeteur,
+        nom_utilisateur,
+        prenom_utilisateur,
+        msg,
+      });
 
       // Redirection après l'envoi du message
       res.redirect("/utilisateurs");
@@ -176,7 +210,8 @@ app.post("/submit", (req, res) => {
   }
 
   // Insertion de l'utilisateur dans la base de données
-  const query = "INSERT INTO utilisateurs (nom_utilisateur, prenom_utilisateur, pwd, Email) VALUES (?, ?, ?, ?)";
+  const query =
+    "INSERT INTO utilisateurs (nom_utilisateur, prenom_utilisateur, pwd, Email) VALUES (?, ?, ?, ?)";
   db.query(query, [nom, prenom, pwd1, email], (err, results) => {
     if (err) {
       if (err.code === "ER_DUP_ENTRY") {
